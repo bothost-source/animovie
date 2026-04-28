@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AniMovie - Stream Anime & Movies</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <div class="logo-icon">A</div>
+            <div class="logo-text">Ani<span>Movie</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="movies.html">Movies</a></li>
+            <li><a href="anime.html">Anime</a></li>
+            <li><a href="mylist.html">My List</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="search-btn" onclick="toggleSearch()">🔍</button>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <div class="user-avatar">U</div>
+        </div>
+    </nav>
+
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search movies, anime, shows..." oninput="handleSearchInput(this.value)">
+                <button class="search-close" onclick="toggleSearch()">✕</button>
+            </div>
+            <div class="search-filters">
+                <button class="filter-chip active">All</button>
+                <button class="filter-chip">Movies</button>
+                <button class="filter-chip">Anime</button>
+            </div>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobileOverlay" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="movies.html">🎬 Movies</a></li>
+            <li><a href="anime.html">🍥 Anime</a></li>
+            <li><a href="mylist.html">📋 My List</a></li>
+        </ul>
+    </div>
+
+    <div id="heroContainer"></div>
+    <div id="contentContainer">
+        <div style="padding-top:85vh"></div>
+        <section class="section"><div class="section-header"><h2 class="section-title"><span class="icon" style="background:linear-gradient(135deg,#e50914,#b20710);border-radius:8px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;font-size:18px">🎬</span>Loading...</h2></div><div class="content-row"><div class="content-scroll"><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div></div></div></section>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand"><div class="logo-text">Ani<span>Movie</span></div><p>Your ultimate destination for streaming anime and movies.</p></div>
+            <div class="footer-links"><h4>Browse</h4><ul><li><a href="movies.html">Movies</a></li><li><a href="anime.html">Anime</a></li><li><a href="mylist.html">My List</a></li></ul></div>
+            <div class="footer-links"><h4>Legal</h4><ul><li><a href="#">Terms</a></li><li><a href="#">Privacy</a></li><li><a href="#">Cookies</a></li></ul></div>
+            <div class="footer-links"><h4>Connect</h4><ul><li><a href="#">Twitter</a></li><li><a href="#">Discord</a></li><li><a href="#">GitHub</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 AniMovie. Built with TMDB & Jikan APIs.</p></div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        async function loadHomePage() {
+            try {
+                const [nowPlaying, popularMovies, topRatedMovies, trendingAnime, topAnime, upcomingAnime] = await Promise.all([
+                    tmdbFetch('/movie/now_playing?page=1'),
+                    tmdbFetch('/movie/popular?page=1'),
+                    tmdbFetch('/movie/top_rated?page=1'),
+                    jikanFetch('/seasons/now'),
+                    jikanFetch('/top/anime?limit=12'),
+                    jikanFetch('/seasons/upcoming')
+                ]);
+
+                const heroMovie = nowPlaying?.results?.[0];
+                if (heroMovie) {
+                    document.getElementById('heroContainer').innerHTML = createHero(heroMovie, 'movie');
+                }
+
+                let html = '';
+                if (trendingAnime?.data) html += createSection('🔥 Trending Anime This Season', '🔥', trendingAnime.data.slice(0, 12), 'anime');
+                if (nowPlaying?.results) html += createSection('🎬 Now Playing in Theaters', '🎬', nowPlaying.results.slice(0, 12), 'movie');
+                if (topRatedMovies?.results) html += createSection('⭐ Top Rated Movies', '⭐', topRatedMovies.results.slice(0, 12), 'movie');
+                if (topAnime) {
+                    const animeArray = Array.isArray(topAnime) ? topAnime : (topAnime.data || []);
+                    html += createSection('🏆 Top Anime of All Time', '🏆', animeArray.slice(0, 12), 'anime');
+                }
+                if (popularMovies?.results) html += createSection('🍿 Popular Movies', '🍿', popularMovies.results.slice(0, 12), 'movie');
+                if (upcomingAnime?.data) html += createSection('📅 Upcoming Anime', '📅', upcomingAnime.data.slice(0, 12), 'anime');
+
+                document.getElementById('contentContainer').innerHTML = html;
+            } catch (e) {
+                document.getElementById('contentContainer').innerHTML = '<div style="text-align:center;padding:100px 20px"><div style="font-size:48px;margin-bottom:20px">😕</div><h2>Something went wrong</h2><p style="color:var(--text-dim)">Please refresh the page.</p><button class="btn btn-primary" style="margin-top:20px" onclick="location.reload()">Refresh</button></div>';
+            }
+        }
+        loadHomePage();
+    </script>
+</body>
+</html>
