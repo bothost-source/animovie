@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My List - AniMovie</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <div class="logo-icon">A</div>
+            <div class="logo-text">Ani<span>Movie</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="movies.html">Movies</a></li>
+            <li><a href="anime.html">Anime</a></li>
+            <li><a href="mylist.html">My List</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="search-btn" onclick="toggleSearch()">🔍</button>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <div class="user-avatar">U</div>
+        </div>
+    </nav>
+
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search..." oninput="handleSearchInput(this.value)">
+                <button class="search-close" onclick="toggleSearch()">✕</button>
+            </div>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobileOverlay" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="movies.html">🎬 Movies</a></li>
+            <li><a href="anime.html">🍥 Anime</a></li>
+            <li><a href="mylist.html">📋 My List</a></li>
+        </ul>
+    </div>
+
+    <!-- My List Hero -->
+    <div class="hero" style="height:35vh;min-height:280px">
+        <div class="hero-bg" style="background-image: url('https://image.tmdb.org/t/p/original/7RyHsO4yDXtBv1zUU3mTpHeQ0d5.jpg')">
+            <div style="position:absolute;inset:0;background:linear-gradient(to top, var(--darker) 0%, rgba(8,8,8,0.8) 60%, rgba(8,8,8,0.4) 100%)"></div>
+        </div>
+        <div class="hero-content" style="max-width:800px">
+            <div class="hero-badge">📋 My List</div>
+            <h1 class="hero-title">Your Collection</h1>
+            <p class="hero-desc">All your saved movies and anime in one place. Ready to binge?</p>
+        </div>
+    </div>
+
+    <!-- Filter Tabs -->
+    <div class="section" style="padding-bottom:0">
+        <div class="category-tags">
+            <button class="category-tag active" onclick="filterList('all', this)">All</button>
+            <button class="category-tag" onclick="filterList('movie', this)">Movies</button>
+            <button class="category-tag" onclick="filterList('anime', this)">Anime</button>
+        </div>
+    </div>
+
+    <!-- List Grid -->
+    <div class="section">
+        <div class="content-grid" id="myListGrid">
+            <div style="grid-column:1/-1;text-align:center;padding:80px 20px">
+                <div style="font-size:48px;margin-bottom:16px">📂</div>
+                <h2 style="margin-bottom:8px">Your list is empty</h2>
+                <p style="color:var(--text-dim);margin-bottom:24px">Start adding movies and anime to build your collection.</p>
+                <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                    <a href="movies.html" class="btn btn-primary">Browse Movies</a>
+                    <a href="anime.html" class="btn btn-secondary">Browse Anime</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand"><div class="logo-text">Ani<span>Movie</span></div><p>Your ultimate destination for streaming.</p></div>
+            <div class="footer-links"><h4>Browse</h4><ul><li><a href="movies.html">Movies</a></li><li><a href="anime.html">Anime</a></li><li><a href="mylist.html">My List</a></li></ul></div>
+            <div class="footer-links"><h4>Legal</h4><ul><li><a href="#">Terms</a></li><li><a href="#">Privacy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 AniMovie. Built with TMDB & Jikan APIs.</p></div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        let myListData = [];
+        let currentListFilter = 'all';
+
+        async function loadMyList() {
+            const saved = JSON.parse(localStorage.getItem('myList') || '[]');
+            const grid = document.getElementById('myListGrid');
+
+            if (saved.length === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column:1/-1;text-align:center;padding:80px 20px">
+                        <div style="font-size:48px;margin-bottom:16px">📂</div>
+                        <h2 style="margin-bottom:8px">Your list is empty</h2>
+                        <p style="color:var(--text-dim);margin-bottom:24px">Start adding movies and anime to build your collection.</p>
+                        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+                            <a href="movies.html" class="btn btn-primary">Browse Movies</a>
+                            <a href="anime.html" class="btn btn-secondary">Browse Anime</a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter by type
+            let filtered = saved;
+            if (currentListFilter !== 'all') {
+                filtered = saved.filter(item => item.type === currentListFilter);
+            }
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:80px 20px"><div style="font-size:48px;margin-bottom:16px">🔍</div><h2>No ${currentListFilter}s in your list</h2><p style="color:var(--text-dim)">Try a different filter or add more content.</p></div>`;
+                return;
+            }
+
+            // Show skeletons while loading
+            grid.innerHTML = Array(filtered.length).fill(0).map(() => createSkeletonCard()).join('');
+
+            // Fetch details for each item
+            const promises = filtered.map(async (item) => {
+                try {
+                    if (item.type === 'anime') {
+                        const data = await jikanFetch(`/anime/${item.id}/full`);
+                        return data ? { ...data, _type: 'anime', _saved: item.added } : null;
+                    } else {
+                        const data = await tmdbFetch(`/movie/${item.id}`);
+                        return data ? { ...data, _type: 'movie', _saved: item.added } : null;
+                    }
+                } catch (e) {
+                    return null;
+                }
+            });
+
+            const results = await Promise.all(promises);
+            const validResults = results.filter(r => r !== null);
+
+            if (validResults.length === 0) {
+                grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px"><h2>Could not load your list</h2><p style="color:var(--text-dim)">Some items may have been removed.</p></div>';
+                return;
+            }
+
+            grid.innerHTML = validResults.map(item => `
+                <div class="content-card" style="position:relative">
+                    <button onclick="removeFromList(${item.id || item.mal_id}, '${item._type}', event)" style="position:absolute;top:8px;right:8px;z-index:10;width:32px;height:32px;background:rgba(0,0,0,0.7);border:none;border-radius:50%;color:#fff;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(10px)">✕</button>
+                    ${createCard(item, item._type)}
+                    <div style="padding:0 4px 8px;font-size:11px;color:var(--text-dim)">Added ${new Date(item._saved).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+        }
+
+        function removeFromList(id, type, event) {
+            event.stopPropagation();
+            let list = JSON.parse(localStorage.getItem('myList') || '[]');
+            list = list.filter(item => !(item.id == id && item.type === type));
+            localStorage.setItem('myList', JSON.stringify(list));
+            showToast('Removed from My List', 'success');
+            loadMyList();
+        }
+
+        function filterList(filter, btn) {
+            currentListFilter = filter;
+            document.querySelectorAll('.category-tag').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            loadMyList();
+        }
+
+        loadMyList();
+    </script>
+</body>
+  </html>
