@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details - AniMovie</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <a href="index.html" class="nav-brand">
+            <div class="logo-icon">A</div>
+            <div class="logo-text">Ani<span>Movie</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="movies.html">Movies</a></li>
+            <li><a href="anime.html">Anime</a></li>
+            <li><a href="mylist.html">My List</a></li>
+        </ul>
+        <div class="nav-right">
+            <button class="search-btn" onclick="toggleSearch()">🔍</button>
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <div class="user-avatar">U</div>
+        </div>
+    </nav>
+
+    <div class="search-overlay" id="searchOverlay">
+        <div class="search-container">
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search..." oninput="handleSearchInput(this.value)">
+                <button class="search-close" onclick="toggleSearch()">✕</button>
+            </div>
+        </div>
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <div class="mobile-menu-overlay" id="mobileOverlay" onclick="toggleMenu()"></div>
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="index.html">🏠 Home</a></li>
+            <li><a href="movies.html">🎬 Movies</a></li>
+            <li><a href="anime.html">🍥 Anime</a></li>
+            <li><a href="mylist.html">📋 My List</a></li>
+        </ul>
+    </div>
+
+    <!-- Detail Hero -->
+    <div id="detailHero">
+        <div class="detail-hero" style="min-height:70vh;display:flex;align-items:flex-end;padding:0 4% 60px">
+            <div class="detail-hero-bg skeleton" style="position:absolute;top:0;left:0;right:0;bottom:0"></div>
+            <div style="position:relative;z-index:1;max-width:900px;width:100%">
+                <div class="skeleton" style="height:60px;width:60%;margin-bottom:20px;border-radius:12px"></div>
+                <div class="skeleton" style="height:20px;width:40%;margin-bottom:30px;border-radius:8px"></div>
+                <div class="skeleton" style="height:80px;width:100%;margin-bottom:30px;border-radius:8px"></div>
+                <div style="display:flex;gap:16px">
+                    <div class="skeleton" style="height:50px;width:160px;border-radius:8px"></div>
+                    <div class="skeleton" style="height:50px;width:140px;border-radius:8px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="detail-tabs">
+        <button class="detail-tab active" onclick="switchTab('overview', this)">Overview</button>
+        <button class="detail-tab" onclick="switchTab('episodes', this)">Episodes</button>
+        <button class="detail-tab" onclick="switchTab('cast', this)">Cast / Characters</button>
+        <button class="detail-tab" onclick="switchTab('similar', this)">Similar</button>
+    </div>
+
+    <!-- Tab Contents -->
+    <div class="tab-content active" id="tab-overview">
+        <div id="overviewContent">
+            <div style="display:flex;gap:40px;flex-wrap:wrap">
+                <div style="flex:1;min-width:300px">
+                    <div class="skeleton" style="height:200px;width:100%;border-radius:12px;margin-bottom:20px"></div>
+                    <div class="skeleton" style="height:16px;width:90%;border-radius:8px;margin-bottom:10px"></div>
+                    <div class="skeleton" style="height:16px;width:80%;border-radius:8px;margin-bottom:10px"></div>
+                    <div class="skeleton" style="height:16px;width:70%;border-radius:8px"></div>
+                </div>
+                <div style="flex:1;min-width:300px">
+                    <div class="skeleton" style="height:30px;width:50%;border-radius:8px;margin-bottom:20px"></div>
+                    <div class="skeleton" style="height:16px;width:100%;border-radius:8px;margin-bottom:10px"></div>
+                    <div class="skeleton" style="height:16px;width:90%;border-radius:8px;margin-bottom:10px"></div>
+                    <div class="skeleton" style="height:16px;width:85%;border-radius:8px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab-episodes">
+        <div id="episodesContent">
+            <div class="episode-list" style="max-width:800px">
+                <div class="episode-item"><div class="episode-num skeleton" style="width:40px;height:30px;border-radius:6px"></div><div class="episode-info" style="flex:1"><div class="skeleton" style="height:18px;width:60%;border-radius:6px;margin-bottom:8px"></div><div class="skeleton" style="height:14px;width:30%;border-radius:6px"></div></div><div class="skeleton" style="width:40px;height:40px;border-radius:50%"></div></div><div class="episode-item"><div class="episode-num skeleton" style="width:40px;height:30px;border-radius:6px"></div><div class="episode-info" style="flex:1"><div class="skeleton" style="height:18px;width:60%;border-radius:6px;margin-bottom:8px"></div><div class="skeleton" style="height:14px;width:30%;border-radius:6px"></div></div><div class="skeleton" style="width:40px;height:40px;border-radius:50%"></div></div><div class="episode-item"><div class="episode-num skeleton" style="width:40px;height:30px;border-radius:6px"></div><div class="episode-info" style="flex:1"><div class="skeleton" style="height:18px;width:60%;border-radius:6px;margin-bottom:8px"></div><div class="skeleton" style="height:14px;width:30%;border-radius:6px"></div></div><div class="skeleton" style="width:40px;height:40px;border-radius:50%"></div></div><div class="episode-item"><div class="episode-num skeleton" style="width:40px;height:30px;border-radius:6px"></div><div class="episode-info" style="flex:1"><div class="skeleton" style="height:18px;width:60%;border-radius:6px;margin-bottom:8px"></div><div class="skeleton" style="height:14px;width:30%;border-radius:6px"></div></div><div class="skeleton" style="width:40px;height:40px;border-radius:50%"></div></div><div class="episode-item"><div class="episode-num skeleton" style="width:40px;height:30px;border-radius:6px"></div><div class="episode-info" style="flex:1"><div class="skeleton" style="height:18px;width:60%;border-radius:6px;margin-bottom:8px"></div><div class="skeleton" style="height:14px;width:30%;border-radius:6px"></div></div><div class="skeleton" style="width:40px;height:40px;border-radius:50%"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab-cast">
+        <div id="castContent">
+            <div class="cast-grid">
+                <div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div><div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div><div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div><div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div><div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div><div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div><div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div><div class="cast-card"><div class="cast-avatar skeleton" style="width:100%;aspect-ratio:1;border-radius:50%"></div><div class="skeleton" style="height:14px;width:80%;margin:12px auto 6px;border-radius:6px"></div><div class="skeleton" style="height:12px;width:60%;margin:0 auto;border-radius:6px"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tab-content" id="tab-similar">
+        <div id="similarContent">
+            <div class="content-grid">
+                <div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div><div class="content-card"><div class="card-poster skeleton skeleton-poster"></div><div class="skeleton skeleton-text"></div><div class="skeleton skeleton-text" style="width:60%"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand"><div class="logo-text">Ani<span>Movie</span></div><p>Your ultimate destination for streaming.</p></div>
+            <div class="footer-links"><h4>Browse</h4><ul><li><a href="movies.html">Movies</a></li><li><a href="anime.html">Anime</a></li><li><a href="mylist.html">My List</a></li></ul></div>
+            <div class="footer-links"><h4>Legal</h4><ul><li><a href="#">Terms</a></li><li><a href="#">Privacy</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>© 2026 AniMovie. Built with TMDB & Jikan APIs.</p></div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const detailId = urlParams.get('id');
+        const detailType = urlParams.get('type') || 'movie';
+
+        async function loadDetailPage() {
+            if (!detailId) {
+                document.getElementById('detailHero').innerHTML = '<div style="padding:200px 4%;text-align:center"><h1>Content Not Found</h1><p style="color:var(--text-dim)">No ID provided.</p><a href="index.html" class="btn btn-primary" style="margin-top:20px">Go Home</a></div>';
+                return;
+            }
+
+            const isAnime = detailType === 'anime';
+
+            if (isAnime) {
+                const [animeData, charactersData, recommendationsData] = await Promise.all([
+                    jikanFetch(`/anime/${detailId}/full`),
+                    jikanFetch(`/anime/${detailId}/characters`),
+                    jikanFetch(`/anime/${detailId}/recommendations`)
+                ]);
+
+                if (!animeData) {
+                    document.getElementById('detailHero').innerHTML = '<div style="padding:200px 4%;text-align:center"><h1>Anime Not Found</h1></div>';
+                    return;
+                }
+
+                const item = animeData;
+                const poster = jikanImage(item.images);
+                const backdrop = item.trailer?.images?.maximum_image_url || poster;
+                const title = item.title_english || item.title;
+                const year = item.aired?.from ? new Date(item.aired.from).getFullYear() : 'N/A';
+                const rating = item.score || 'N/A';
+                const episodes = item.episodes || '?';
+                const duration = item.duration || 'N/A';
+                const status = item.status || 'N/A';
+                const synopsis = item.synopsis || 'No synopsis available.';
+                const genres = item.genres || [];
+                const studios = item.studios || [];
+
+                // Hero
+                document.getElementById('detailHero').innerHTML = `
+                    <div class="detail-hero">
+                        <div class="detail-hero-bg" style="background-image: url('${backdrop}')"></div>
+                        <div class="detail-content">
+                            <div class="detail-poster">
+                                <img src="${poster}" alt="${title}">
+                            </div>
+                            <div class="detail-info">
+                                <h1 class="detail-title">${title}</h1>
+                                <div class="detail-meta">
+                                    <span class="rating">★ ${rating}</span>
+                                    <span>${year}</span>
+                                    <span class="hd-badge">HD</span>
+                                    <span>${episodes} EPS</span>
+                                    <span>${duration}</span>
+                                    <span>${status}</span>
+                                </div>
+                                <div class="detail-genres">
+                                    ${genres.map(g => `<span class="genre-tag">${g.name}</span>`).join('')}
+                                </div>
+                                <p class="detail-desc">${synopsis}</p>
+                                <div class="detail-actions">
+                                    <button class="btn btn-primary btn-large"><span>▶</span> Watch Now</button>
+                                    <button class="btn btn-secondary btn-large" onclick="addToList(${detailId}, 'anime')"><span>+</span> Add to List</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Overview
+                document.getElementById('overviewContent').innerHTML = `
+                    <div style="display:flex;gap:40px;flex-wrap:wrap">
+                        <div style="flex:1;min-width:300px">
+                            <h3 style="font-size:20px;margin-bottom:16px">About</h3>
+                            <p style="color:var(--text-muted);line-height:1.8;margin-bottom:20px">${synopsis}</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px">
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Type</div><div style="font-weight:600">${item.type || 'N/A'}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Episodes</div><div style="font-weight:600">${episodes}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Status</div><div style="font-weight:600">${status}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Aired</div><div style="font-weight:600">${item.aired?.string || 'N/A'}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Studios</div><div style="font-weight:600">${studios.map(s => s.name).join(', ') || 'N/A'}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Rating</div><div style="font-weight:600">${item.rating || 'N/A'}</div></div>
+                            </div>
+                        </div>
+                        <div style="flex:1;min-width:300px">
+                            <h3 style="font-size:20px;margin-bottom:16px">Trailer</h3>
+                            ${item.trailer?.embed_url 
+                                ? `<div style="position:relative;padding-bottom:56.25%;border-radius:12px;overflow:hidden;background:var(--card)">
+                                    <iframe src="${item.trailer.embed_url}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
+                                   </div>`
+                                : `<div style="padding:60px 20px;text-align:center;background:var(--card);border-radius:12px;color:var(--text-dim)">No trailer available</div>`
+                            }
+                        </div>
+                    </div>
+                `;
+
+                // Episodes
+                const epList = document.getElementById('episodesContent');
+                if (episodes && episodes !== '?') {
+                    let epHtml = '<div class="episode-list">';
+                    for (let i = 1; i <= Math.min(episodes, 24); i++) {
+                        epHtml += `
+                            <div class="episode-item">
+                                <div class="episode-num">${String(i).padStart(2, '0')}</div>
+                                <div class="episode-info">
+                                    <div class="episode-title">Episode ${i}</div>
+                                    <div class="episode-duration">${duration}</div>
+                                </div>
+                                <div class="episode-play">▶</div>
+                            </div>
+                        `;
+                    }
+                    epHtml += '</div>';
+                    epList.innerHTML = epHtml;
+                } else {
+                    epList.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-dim)">No episode information available.</div>';
+                }
+
+                // Cast / Characters
+                const castList = document.getElementById('castContent');
+                if (charactersData && charactersData.length > 0) {
+                    const chars = charactersData.slice(0, 12);
+                    castList.innerHTML = '<div class="cast-grid">' + chars.map(c => `
+                        <div class="cast-card">
+                            <div class="cast-avatar">
+                                <img src="${c.character?.images?.jpg?.image_url || 'https://via.placeholder.com/200/1a1a1a/666?text=?'}">
+                            </div>
+                            <div class="cast-name">${c.character?.name || 'Unknown'}</div>
+                            <div class="cast-role">${c.role || 'Character'}</div>
+                        </div>
+                    `).join('') + '</div>';
+                } else {
+                    castList.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-dim)">No character information available.</div>';
+                }
+
+                // Similar
+                const similarList = document.getElementById('similarContent');
+                if (recommendationsData && recommendationsData.length > 0) {
+                    const recs = recommendationsData.slice(0, 12);
+                    similarList.innerHTML = '<div class="content-grid">' + recs.map(r => createCard(r.entry || r, 'anime')).join('') + '</div>';
+                } else {
+                    similarList.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-dim)">No recommendations available.</div>';
+                }
+
+                document.title = `${title} - AniMovie`;
+
+            } else {
+                // MOVIE DETAIL
+                const [movieData, creditsData, similarData, videosData] = await Promise.all([
+                    tmdbFetch(`/movie/${detailId}`),
+                    tmdbFetch(`/movie/${detailId}/credits`),
+                    tmdbFetch(`/movie/${detailId}/similar`),
+                    tmdbFetch(`/movie/${detailId}/videos`)
+                ]);
+
+                if (!movieData) {
+                    document.getElementById('detailHero').innerHTML = '<div style="padding:200px 4%;text-align:center"><h1>Movie Not Found</h1></div>';
+                    return;
+                }
+
+                const item = movieData;
+                const poster = tmdbImage(item.poster_path);
+                const backdrop = tmdbImage(item.backdrop_path || item.poster_path, 'original');
+                const title = item.title;
+                const year = item.release_date ? item.release_date.split('-')[0] : 'N/A';
+                const rating = item.vote_average ? item.vote_average.toFixed(1) : 'N/A';
+                const runtime = item.runtime ? `${Math.floor(item.runtime/60)}h ${item.runtime%60}m` : 'N/A';
+                const synopsis = item.overview || 'No overview available.';
+                const genres = item.genres || [];
+                const cast = creditsData?.cast || [];
+                const trailer = videosData?.results?.find(v => v.type === 'Trailer' && v.site === 'YouTube');
+
+                // Hero
+                document.getElementById('detailHero').innerHTML = `
+                    <div class="detail-hero">
+                        <div class="detail-hero-bg" style="background-image: url('${backdrop}')"></div>
+                        <div class="detail-content">
+                            <div class="detail-poster">
+                                <img src="${poster}" alt="${title}">
+                            </div>
+                            <div class="detail-info">
+                                <h1 class="detail-title">${title}</h1>
+                                <div class="detail-meta">
+                                    <span class="rating">★ ${rating}</span>
+                                    <span>${year}</span>
+                                    <span class="hd-badge">HD</span>
+                                    <span>${runtime}</span>
+                                    <span>${item.status || 'N/A'}</span>
+                                </div>
+                                <div class="detail-genres">
+                                    ${genres.map(g => `<span class="genre-tag">${g.name}</span>`).join('')}
+                                </div>
+                                <p class="detail-desc">${synopsis}</p>
+                                <div class="detail-actions">
+                                    <button class="btn btn-primary btn-large"><span>▶</span> Watch Now</button>
+                                    <button class="btn btn-secondary btn-large" onclick="addToList(${detailId}, 'movie')"><span>+</span> Add to List</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                // Overview
+                document.getElementById('overviewContent').innerHTML = `
+                    <div style="display:flex;gap:40px;flex-wrap:wrap">
+                        <div style="flex:1;min-width:300px">
+                            <h3 style="font-size:20px;margin-bottom:16px">Storyline</h3>
+                            <p style="color:var(--text-muted);line-height:1.8;margin-bottom:20px">${synopsis}</p>
+                            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px">
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Release Date</div><div style="font-weight:600">${item.release_date || 'N/A'}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Runtime</div><div style="font-weight:600">${runtime}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Budget</div><div style="font-weight:600">${item.budget ? '$' + item.budget.toLocaleString() : 'N/A'}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Revenue</div><div style="font-weight:600">${item.revenue ? '$' + item.revenue.toLocaleString() : 'N/A'}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Status</div><div style="font-weight:600">${item.status || 'N/A'}</div></div>
+                                <div><div style="font-size:12px;color:var(--text-dim);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">Language</div><div style="font-weight:600">${item.original_language?.toUpperCase() || 'N/A'}</div></div>
+                            </div>
+                        </div>
+                        <div style="flex:1;min-width:300px">
+                            <h3 style="font-size:20px;margin-bottom:16px">Trailer</h3>
+                            ${trailer 
+                                ? `<div style="position:relative;padding-bottom:56.25%;border-radius:12px;overflow:hidden;background:var(--card)">
+                                    <iframe src="https://www.youtube.com/embed/${trailer.key}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none" allowfullscreen></iframe>
+                                   </div>`
+                                : `<div style="padding:60px 20px;text-align:center;background:var(--card);border-radius:12px;color:var(--text-dim)">No trailer available</div>`
+                            }
+                        </div>
+                    </div>
+                `;
+
+                // Episodes tab - hide for movies or show as "Watch Movie"
+                document.getElementById('tab-episodes').innerHTML = `
+                    <div style="text-align:center;padding:80px 20px">
+                        <div style="font-size:64px;margin-bottom:20px">🎬</div>
+                        <h2 style="margin-bottom:12px">Ready to Watch?</h2>
+                        <p style="color:var(--text-dim);margin-bottom:30px">This is a movie. Click below to start watching.</p>
+                        <button class="btn btn-primary btn-large"><span>▶</span> Watch Now</button>
+                    </div>
+                `;
+
+                // Cast
+                const castList = document.getElementById('castContent');
+                if (cast.length > 0) {
+                    const topCast = cast.slice(0, 12);
+                    castList.innerHTML = '<div class="cast-grid">' + topCast.map(c => `
+                        <div class="cast-card">
+                            <div class="cast-avatar">
+                                <img src="${c.profile_path ? tmdbImage(c.profile_path, 'w200') : 'https://via.placeholder.com/200/1a1a1a/666?text=?'}">
+                            </div>
+                            <div class="cast-name">${c.name}</div>
+                            <div class="cast-role">${c.character}</div>
+                        </div>
+                    `).join('') + '</div>';
+                } else {
+                    castList.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-dim)">No cast information available.</div>';
+                }
+
+                // Similar
+                const similarList = document.getElementById('similarContent');
+                if (similarData?.results) {
+                    similarList.innerHTML = '<div class="content-grid">' + similarData.results.slice(0, 12).map(item => createCard(item, 'movie')).join('') + '</div>';
+                } else {
+                    similarList.innerHTML = '<div style="text-align:center;padding:60px;color:var(--text-dim)">No similar movies found.</div>';
+                }
+
+                document.title = `${title} - AniMovie`;
+            }
+        }
+
+        function switchTab(tabName, btn) {
+            document.querySelectorAll('.detail-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        loadDetailPage();
+    </script>
+</body>
+</html>
